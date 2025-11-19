@@ -1,3 +1,8 @@
+docker run --rm -p 8317:8317 -v ./config.yaml:/CLIProxyAPI/config.yaml -v /path/to/your/auth-dir:/root/.cli-proxy-api eceasy/cli-proxy-api:latest
+
+
+==========================================
+
 # CLI Proxy API
 
 English | [中文](README_CN.md)
