@@ -1,5 +1,6 @@
 docker run --rm -p 8317:8317 -v ./config.yaml:/CLIProxyAPI/config.yaml -v ./auth-dir:/root/.cli-proxy-api eceasy/cli-proxy-api:latest
 
+docker run --rm -p 8085:8085 -v ./config.yaml:/CLIProxyAPI/config.yaml -v ./auth-dir:/root/.cli-proxy-api eceasy/cli-proxy-api:latest /CLIProxyAPI/CLIProxyAPI --login
 
 ==========================================
 
