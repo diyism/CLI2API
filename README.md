@@ -5,12 +5,12 @@
 
     $ docker run --rm -p 8317:8317 -v ./config.yaml:/CLIProxyAPI/config.yaml -v ./auth-dir:/root/.cli-proxy-api eceasy/cli-proxy-api:latest
 
-    $ cat ~/claude/settings.json
+    $ cat ~/.claude/settings.json
     {
       "env": {
         "ANTHROPIC_BASE_URL": "http://localhost:8317/",
         "ANTHROPIC_AUTH_TOKEN": "your-api-key-1",
-        "ANTHROPIC_MODEL": "gemini-2.5-pro"
+        "ANTHROPIC_MODEL": "gemini-3-pro-preview"
       }
     }
 
