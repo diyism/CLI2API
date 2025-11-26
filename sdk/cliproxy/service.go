@@ -281,6 +281,14 @@ func (s *Service) applyCoreAuthRemoval(ctx context.Context, id string) {
 	}
 }
 
+func (s *Service) applyRetryConfig(cfg *config.Config) {
+	if s == nil || s.coreManager == nil || cfg == nil {
+		return
+	}
+	maxInterval := time.Duration(cfg.MaxRetryInterval) * time.Second
+	s.coreManager.SetRetryConfig(cfg.RequestRetry, maxInterval)
+}
+
 func openAICompatInfoFromAuth(a *coreauth.Auth) (providerKey string, compatName string, ok bool) {
 	if a == nil {
 		return "", "", false
@@ -333,6 +341,8 @@ func (s *Service) ensureExecutorsForAuth(a *coreauth.Auth) {
 			s.coreManager.RegisterExecutor(executor.NewAIStudioExecutor(s.cfg, a.ID, s.wsGateway))
 		}
 		return
+	case "antigravity":
+		s.coreManager.RegisterExecutor(executor.NewAntigravityExecutor(s.cfg))
 	case "claude":
 		s.coreManager.RegisterExecutor(executor.NewClaudeExecutor(s.cfg))
 	case "codex":
@@ -391,6 +401,8 @@ func (s *Service) Run(ctx context.Context) error {
 	if err := s.ensureAuthDir(); err != nil {
 		return err
 	}
+
+	s.applyRetryConfig(s.cfg)
 
 	if s.coreManager != nil {
 		if errLoad := s.coreManager.Load(ctx); errLoad != nil {
@@ -474,6 +486,7 @@ func (s *Service) Run(ctx context.Context) error {
 		if newCfg == nil {
 			return
 		}
+		s.applyRetryConfig(newCfg)
 		if s.server != nil {
 			s.server.UpdateClients(newCfg)
 		}
@@ -629,11 +642,15 @@ func (s *Service) registerModelsForAuth(a *coreauth.Auth) {
 		models = registry.GetGeminiModels()
 	case "vertex":
 		// Vertex AI Gemini supports the same model identifiers as Gemini.
-		models = registry.GetGeminiModels()
+		models = registry.GetGeminiVertexModels()
 	case "gemini-cli":
 		models = registry.GetGeminiCLIModels()
 	case "aistudio":
 		models = registry.GetAIStudioModels()
+	case "antigravity":
+		ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+		models = executor.FetchAntigravityModels(ctx, a, s.cfg)
+		cancel()
 	case "claude":
 		models = registry.GetClaudeModels()
 		if entry := s.resolveConfigClaudeKey(a); entry != nil && len(entry.Models) > 0 {
