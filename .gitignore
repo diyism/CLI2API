@@ -15,7 +15,7 @@ pgstore/*
 gitstore/*
 objectstore/*
 static/*
-auth_dir/*
+auth-dir/*
 
 # Authentication data
 auths/*
