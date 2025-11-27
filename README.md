@@ -1,5 +1,10 @@
     #docker run --rm -p 8318:8085 -v ./config.yaml:/CLIProxyAPI/config.yaml -v ./auth-dir:/root/.cli-proxy-api eceasy/cli-proxy-api:latest /CLIProxyAPI/CLIProxyAPI --login
-    $ docker run --rm -p 8318:8085 -v ./config.yaml:/CLIProxyAPI/config.yaml -v ./auth-dir:/root/.cli-proxy-api eceasy/cli-proxy-api:latest /CLIProxyAPI/CLIProxyAPI --login --project_id default-project-478
+    #$ docker run --rm -p 8318:8085 -v ./config.yaml:/CLIProxyAPI/config.yaml -v ./auth-dir:/root/.cli-proxy-api eceasy/cli-proxy-api:latest /CLIProxyAPI/CLIProxyAPI --login --project_id default-project-478
+    $ git clone https://github.com/diyism/CLI2API
+    $ cd CLI2API
+    $ go build cmd/server/main.go
+    $ ./cli-proxy-api --config=config.yaml --login --project_id ...
+    $ ./cli-proxy-api --config=config.yaml
     visit http://localhost:8318/oauth2callback?...          # take care, modify the http://localhost:8085/... to http://localhost:8318/...
     ctrl+c to shutdown the login docker
 
