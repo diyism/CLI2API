@@ -4,11 +4,11 @@
     $ cd CLI2API
     $ go build cmd/server/main.go
     $ ./cli-proxy-api --config=config.yaml --login --project_id ...
-    $ ./cli-proxy-api --config=config.yaml
     visit http://localhost:8318/oauth2callback?...          # take care, modify the http://localhost:8085/... to http://localhost:8318/...
     ctrl+c to shutdown the login docker
 
-    $ docker run --rm -p 8317:8317 -v ./config.yaml:/CLIProxyAPI/config.yaml -v ./auth-dir:/root/.cli-proxy-api eceasy/cli-proxy-api:latest
+    #$ docker run --rm -p 8317:8317 -v ./config.yaml:/CLIProxyAPI/config.yaml -v ./auth-dir:/root/.cli-proxy-api eceasy/cli-proxy-api:latest
+    $ ./cli-proxy-api --config=config.yaml
 
     $ cat ~/.claude/settings.json
     {
